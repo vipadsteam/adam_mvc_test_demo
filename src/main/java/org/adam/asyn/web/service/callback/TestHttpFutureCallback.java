@@ -64,4 +64,11 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 		System.out.println("---- http send complete");
 	}
 
+	@Override
+	public void dealException(Throwable t) {
+		if (null != t) {
+			t.printStackTrace();
+		}
+	}
+
 }
