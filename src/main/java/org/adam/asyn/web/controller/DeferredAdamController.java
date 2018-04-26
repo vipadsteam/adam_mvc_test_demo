@@ -37,8 +37,10 @@ public class DeferredAdamController {
 
 	private static final ScheduledExecutorService instance = Executors.newScheduledThreadPool(800, new MyThreadFactory("MyThreads"));
 
-	
 	/**
+	 * 第一种方法：全异步，serviceChain的doServer完成后则主线程返回了，不等callback，
+	 * 由DeferredResult去返回response
+	 * 
 	 * @param req
 	 * @return
 	 */
@@ -52,9 +54,10 @@ public class DeferredAdamController {
 		serviceChain.doServer(req, output, WebMVCConstants.ADAM_TEST1);
 		return result;
 	}
-	
-	
+
 	/**
+	 * 第二种方法：全异步，声明串联的serviceChain，执行future.work()才真正work，serviceChain都是全异步串联起来的
+	 * 
 	 * @param req
 	 * @return
 	 */
@@ -63,20 +66,27 @@ public class DeferredAdamController {
 	public DeferredResult<ResponseMsg<String>> request1(RequestMsg req) {
 		logger.debug("request1:请求参数{}", req.getParam());
 		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
+		// 声明3个ResultVO，注意VO是不能支持并发的，每个serviceChain的流程都要有自己的ResultVO
 		ResultVo<DeferredResult<ResponseMsg<String>>> output1 = new ResultVo<DeferredResult<ResponseMsg<String>>>();
 		ResultVo<DeferredResult<ResponseMsg<String>>> output2 = new ResultVo<DeferredResult<ResponseMsg<String>>>();
 		ResultVo<DeferredResult<ResponseMsg<String>>> output3 = new ResultVo<DeferredResult<ResponseMsg<String>>>();
 		output1.setData(result);
 		output2.setData(result);
 		output3.setData(result);
+
+		// 声明个future来串联3个serviceChain
 		AdamFuture future = new AdamFuture(3);
 		output1.setFuture(future);
 		output2.setFuture(future);
 		output3.setFuture(future);
+
+		// 声明具体serviceChain操作流程
 		serviceChain.doServer(req, output1, WebMVCConstants.ADAM_TEST1);
 		serviceChain.doServer(req, output2, WebMVCConstants.ADAM_TEST2);
 		serviceChain.doServer(req, output3, WebMVCConstants.ADAM_TEST3);
-		future.workNext();
+
+		// 开始工作
+		future.work();
 		return result;
 	}
 
