@@ -3,6 +3,9 @@
  */
 package org.adam.asyn.web.service.callback;
 
+import java.util.concurrent.CountDownLatch;
+
+import org.adam.asyn.web.common.TestThreadPool;
 import org.adam.asyn.web.common.callback.HttpFutureCallback;
 import org.adam.asyn.web.request.RequestMsg;
 import org.adam.asyn.web.response.ResponseMsg;
@@ -17,6 +20,13 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, DeferredResult<ResponseMsg<String>>> {
 
+	private CountDownLatch latch = new CountDownLatch(1);
+
+	public TestHttpFutureCallback() {
+		super(Thread.currentThread().getId());
+		this.tpe = TestThreadPool.instance().getThreadPoolExecutor();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -30,9 +40,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 		String json;
 		try {
 			json = EntityUtils.toString(entity, "utf-8");
-			System.out.println("---- http send success");
-			System.out.println(json);
-			this.income.setParam("json");
+			this.income.setParam(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -49,7 +57,6 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 		if (null != e) {
 			e.printStackTrace();
 		}
-		System.out.println("---- http send fail");
 	}
 
 	/*
@@ -61,7 +68,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealComplete(HttpResponse result, Exception e) {
-		System.out.println("---- http send complete");
+		latch.countDown();
 	}
 
 	@Override

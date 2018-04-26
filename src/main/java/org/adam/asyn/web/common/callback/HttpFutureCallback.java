@@ -6,6 +6,10 @@ import org.springframework.adam.service.AbsCallbacker;
 
 public abstract class HttpFutureCallback<T1, T2> extends AbsCallbacker<HttpResponse, Exception, T1, T2> implements FutureCallback<HttpResponse> {
 
+	public HttpFutureCallback(long motherThreadId) {
+		super(motherThreadId);
+	}
+
 	@Override
 	public void completed(HttpResponse result) {
 		if(null != result){

@@ -4,17 +4,23 @@
 package org.adam.asyn.web.service.client;
 
 import java.nio.charset.CodingErrorAction;
+import java.util.concurrent.TimeUnit;
 
 import org.adam.asyn.web.common.log.LogService;
 import org.adam.asyn.web.service.callback.TestHttpFutureCallback;
 import org.apache.http.Consts;
 import org.apache.http.Header;
+import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.MessageConstraints;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.nio.client.CloseableHttpAsyncClient;
 import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.impl.nio.conn.PoolingNHttpClientConnectionManager;
@@ -24,6 +30,7 @@ import org.apache.http.nio.conn.NoopIOSessionStrategy;
 import org.apache.http.nio.conn.SchemeIOSessionStrategy;
 import org.apache.http.nio.reactor.ConnectingIOReactor;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.springframework.adam.common.utils.AdamExceptionUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +47,8 @@ public class HttpTestClient implements InitializingBean {
 	private LogService logService;
 
 	private CloseableHttpAsyncClient httpAsyncClient;
+	
+	private CloseableHttpClient httpclientSyn;
 
 	private Header header;
 
@@ -59,21 +68,46 @@ public class HttpTestClient implements InitializingBean {
 		HttpPost httppost = new HttpPost(url);
 		httppost.setConfig(config);
 		httppost.setHeader(header);
-
-		String vreInfoStr = "";
-		String queryStr = "";
 		TestHttpFutureCallback callback = null;
 		try {
 			// 请求发送
 			callback = new TestHttpFutureCallback();
 			httpAsyncClient.execute(httppost, callback);
 		} catch (Exception e) {
-			vreInfoStr = queryStr;
 			String logStr = AdamExceptionUtils.getStackTrace(e);
-			logService.sendTechnologyErrorAccountLog(vreInfoStr, logStr, url, "test http发送系统异常");
+			logService.sendTechnologyErrorAccountLog("", logStr, url, "test http发送系统异常");
 		}
 
 		return callback;
+	}
+	
+	/**
+	 * 调用VRE
+	 * 
+	 * @param slots
+	 * @param userType
+	 * @param warehouse
+	 * @param client
+	 * @return
+	 */
+	public String callSyn(String url) {
+		CloseableHttpClient httpclient = getHttpClientSyn();
+		HttpPost httppost = new HttpPost(url);
+		httppost.setConfig(config);
+		httppost.setHeader(header);
+		HttpGet httpget = new HttpGet(url);
+		httpget.setConfig(config);
+		CloseableHttpResponse response = null;
+		String result = null;
+		try {
+			response = httpclient.execute(httpget);
+			HttpEntity entity = response.getEntity();
+			result = EntityUtils.toString(entity, "utf-8");
+		} catch (Exception e) {
+			String logStr = AdamExceptionUtils.getStackTrace(e);
+			logService.sendTechnologyErrorAccountLog("", logStr, url, "test http发送系统异常");
+		}
+		return result;
 	}
 
 	/**
@@ -95,12 +129,30 @@ public class HttpTestClient implements InitializingBean {
 		return this.httpAsyncClient;
 	}
 
+	private CloseableHttpClient getHttpClientSyn() {
+		if (null == this.httpclientSyn) {
+			try {
+				init();
+			} catch (Exception e) {
+				String logStr = AdamExceptionUtils.getStackTrace(e);
+				logService.sendTechnologyErrorAccountLog("", logStr, "", "HttpClientSyn系统异常");
+			}
+		}
+		return this.httpclientSyn;
+	}
+	
 	private synchronized void init() throws Exception {
-		if (null != this.httpAsyncClient) {
+		if (null != this.httpAsyncClient && null != this.httpclientSyn) {
 			return;
 		}
 		this.httpAsyncClient = initAsynHttpClient(40, false);
 		this.header = new BasicHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
+		
+		HttpClientBuilder builder = HttpClientBuilder.create().setConnectionTimeToLive(60, TimeUnit.SECONDS) // 60秒后关闭连接
+				.setMaxConnTotal(1000) // 设置最大1000个并发连接上限
+				.setMaxConnPerRoute(1000); // 每个域1000个连接上限
+
+		this.httpclientSyn = builder.build();
 		refresh();
 	}
 

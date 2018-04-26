@@ -93,7 +93,7 @@ public class DeferredRestController {
 			msg.fail("錯誤!请求已经释放");
 			return msg;
 		}
-		String resultStr = "result" + x.toString() + ". Received:" + requestBodyMap.get(x).getParam();
+		String resultStr = "result" + x.toString() + ". Received:" + requestBodyMap.get(x).getParam() + System.currentTimeMillis();
 		msg.success("成功", resultStr);
 		result.setResult(msg);// 设置DeferredResult的结果值，设置之后，它对应的请求进行返回处理
 		responseBodyMap.remove(x);// 返回map删除
