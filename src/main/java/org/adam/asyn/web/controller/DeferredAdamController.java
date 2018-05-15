@@ -44,9 +44,9 @@ public class DeferredAdamController {
 	 * @param req
 	 * @return
 	 */
-	@RequestMapping("/request")
+	@RequestMapping("/request1")
 	@ResponseBody
-	public DeferredResult<ResponseMsg<String>> request(RequestMsg req) {
+	public DeferredResult<ResponseMsg<String>> request1(RequestMsg req) {
 		logger.debug("request1:请求参数{}", req.getParam());
 		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
 		ResultVo<DeferredResult<ResponseMsg<String>>> output = new ResultVo<DeferredResult<ResponseMsg<String>>>();
@@ -61,10 +61,10 @@ public class DeferredAdamController {
 	 * @param req
 	 * @return
 	 */
-	@RequestMapping("/request1")
+	@RequestMapping("/request2")
 	@ResponseBody
-	public DeferredResult<ResponseMsg<String>> request1(RequestMsg req) {
-		logger.debug("request1:请求参数{}", req.getParam());
+	public DeferredResult<ResponseMsg<String>> request2(RequestMsg req) {
+		logger.debug("request2:请求参数{}", req.getParam());
 		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
 		// 声明3个ResultVO，注意VO是不能支持并发的，每个serviceChain的流程都要有自己的ResultVO
 		ResultVo<DeferredResult<ResponseMsg<String>>> output1 = new ResultVo<DeferredResult<ResponseMsg<String>>>();
@@ -89,14 +89,32 @@ public class DeferredAdamController {
 		future.work();
 		return result;
 	}
+	
+
+	/**
+	 * 第三种方法：全异步并发
+	 * 
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/request3")
+	@ResponseBody
+	public DeferredResult<ResponseMsg<String>> request3(RequestMsg req) {
+		logger.debug("request3:请求参数{}", req.getParam());
+		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
+		ResultVo<DeferredResult<ResponseMsg<String>>> output = new ResultVo<DeferredResult<ResponseMsg<String>>>();
+		output.setData(result);
+		serviceChain.doServer(req, output, WebMVCConstants.ADAM_TEST4);
+		return result;
+	}
 
 	/**
 	 * @param req
 	 * @return
 	 */
-	@RequestMapping("/request2")
+	@RequestMapping("/request")
 	@ResponseBody
-	public DeferredResult<String> request2() {
+	public DeferredResult<String> request() {
 		DeferredResult<String> result = new DeferredResult<String>();
 		instance.schedule(new Runnable() {
 			@Override

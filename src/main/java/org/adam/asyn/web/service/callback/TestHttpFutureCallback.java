@@ -20,8 +20,6 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, DeferredResult<ResponseMsg<String>>> {
 
-	private CountDownLatch latch = new CountDownLatch(1);
-
 	public TestHttpFutureCallback() {
 		super(Thread.currentThread().getId());
 		this.tpe = TestThreadPool.instance().getThreadPoolExecutor();
@@ -36,11 +34,12 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealSuccess(HttpResponse response) {
+		System.out.println(Thread.currentThread().getId() + ":test success");
 		HttpEntity entity = response.getEntity();
 		String json;
 		try {
 			json = EntityUtils.toString(entity, "utf-8");
-			this.income.setParam(json);
+			this.income.setParam(this.income.getParam() + "|" + json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,6 +53,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealFail(Exception e) {
+		System.out.println(Thread.currentThread().getId() + ":test fail");
 		if (null != e) {
 			e.printStackTrace();
 		}
@@ -68,7 +68,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealComplete(HttpResponse result, Exception e) {
-		latch.countDown();
+		System.out.println(Thread.currentThread().getId() + ":test complete");
 	}
 
 	@Override

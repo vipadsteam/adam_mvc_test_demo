@@ -39,6 +39,7 @@ public class AdamTestStep2_4 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
+		System.out.println(STEP+" doService");
 		String url = "http://127.0.0.1:8080/api/request1?param=" + income.getParam();
 		TestHttpFutureCallback callback = httpTestClient.call(url);
 		return callback;
@@ -46,16 +47,19 @@ public class AdamTestStep2_4 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doSuccess(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
+		System.out.println(STEP+" doSuccess");
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doFail(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
+		System.out.println(STEP+" doFail");
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doComplate(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
+		System.out.println(STEP+" doComplate");
 		return null;
 	}
 

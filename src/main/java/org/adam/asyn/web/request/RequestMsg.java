@@ -13,7 +13,7 @@ public class RequestMsg implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String param;
+	private String param = "1";
 
 	public RequestMsg() {
 		super();
