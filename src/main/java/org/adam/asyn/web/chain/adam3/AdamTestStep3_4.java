@@ -14,6 +14,7 @@ import org.springframework.adam.common.bean.ResultVo;
 import org.springframework.adam.common.bean.annotation.service.ServiceErrorCode;
 import org.springframework.adam.common.bean.annotation.service.ServiceOrder;
 import org.springframework.adam.common.bean.annotation.service.ServiceType;
+import org.springframework.adam.common.utils.ThreadLocalHolder;
 import org.springframework.adam.service.AbsCallbacker;
 import org.springframework.adam.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class AdamTestStep3_4 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doService");
+		System.out.println(STEP+" doService " + ThreadLocalHolder.getRequestLogFlag());
 		String url = "http://127.0.0.1:8080/api/request1?param=" + income.getParam();
 		TestHttpFutureCallback callback = httpTestClient.call(url);
 		return callback;
@@ -47,19 +48,19 @@ public class AdamTestStep3_4 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doSuccess(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doSuccess");
+		System.out.println(STEP+" doSuccess " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doFail(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doFail");
+		System.out.println(STEP+" doFail " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doComplate(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doComplate");
+		System.out.println(STEP+" doComplate " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 

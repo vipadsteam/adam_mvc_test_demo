@@ -59,7 +59,7 @@ public class LogService implements ILogService {
 	 */
 	@Override
 	public void sendBeginRequestLog(Object obj) {
-//		log.info("request_begin_log: " + ra() + JSON.toJSONString(obj));
+		log.info("request_begin_log: " + ra() + JSON.toJSONString(obj));
 	}
 
 	/*

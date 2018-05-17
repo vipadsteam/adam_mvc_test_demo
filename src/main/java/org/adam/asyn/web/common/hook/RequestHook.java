@@ -5,6 +5,7 @@ package org.adam.asyn.web.common.hook;
 
 import java.util.Map;
 
+import org.springframework.adam.common.utils.ThreadLocalHolder;
 import org.springframework.adam.service.IRequestHook;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ public class RequestHook implements IRequestHook {
 	 */
 	@Override
 	public Object doBefore(String url, Map<String, String> headersMap, Object[] income, Object output) throws Exception {
+		ThreadLocalHolder.setRequestLogFlag(2);
 		return null;
 	}
 

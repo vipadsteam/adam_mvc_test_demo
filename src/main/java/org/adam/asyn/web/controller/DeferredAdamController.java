@@ -14,6 +14,7 @@ import org.adam.asyn.web.response.ResponseMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.adam.common.bean.ResultVo;
+import org.springframework.adam.common.bean.annotation.service.RpcService;
 import org.springframework.adam.service.AdamFuture;
 import org.springframework.adam.service.chain.ServiceChain;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,7 @@ public class DeferredAdamController {
 	 */
 	@RequestMapping("/request1")
 	@ResponseBody
+	@RpcService
 	public DeferredResult<ResponseMsg<String>> request1(RequestMsg req) {
 		logger.debug("request1:请求参数{}", req.getParam());
 		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
@@ -63,6 +65,7 @@ public class DeferredAdamController {
 	 */
 	@RequestMapping("/request2")
 	@ResponseBody
+	@RpcService
 	public DeferredResult<ResponseMsg<String>> request2(RequestMsg req) {
 		logger.debug("request2:请求参数{}", req.getParam());
 		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
@@ -99,6 +102,7 @@ public class DeferredAdamController {
 	 */
 	@RequestMapping("/request3")
 	@ResponseBody
+	@RpcService
 	public DeferredResult<ResponseMsg<String>> request3(RequestMsg req) {
 		logger.debug("request3:请求参数{}", req.getParam());
 		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
@@ -114,6 +118,7 @@ public class DeferredAdamController {
 	 */
 	@RequestMapping("/request")
 	@ResponseBody
+	@RpcService
 	public DeferredResult<String> request() {
 		DeferredResult<String> result = new DeferredResult<String>();
 		instance.schedule(new Runnable() {
