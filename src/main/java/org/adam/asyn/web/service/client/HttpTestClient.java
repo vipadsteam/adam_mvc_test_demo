@@ -162,7 +162,7 @@ public class HttpTestClient implements InitializingBean {
 	}
 
 	public void refresh() {
-		Integer timeout = 180000;
+		Integer timeout = 5000;
 		this.config = RequestConfig.custom().setSocketTimeout(timeout).setConnectTimeout(timeout).setConnectionRequestTimeout(timeout).build();
 	}
 

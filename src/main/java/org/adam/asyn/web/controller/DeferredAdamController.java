@@ -90,6 +90,9 @@ public class DeferredAdamController {
 
 		// 开始工作
 		future.work();
+		System.out.println("aaaaaaaaaa");
+		future.waitEnd();
+		System.out.println("bbbbbbbbbb");
 		return result;
 	}
 	

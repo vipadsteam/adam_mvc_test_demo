@@ -30,8 +30,11 @@ public class MyRestController {
 	 */
 	@RequestMapping("/request")
 	@ResponseBody
-	public String request() {
+	public String request(int sleep) {
 		try {
+			if(sleep>0){
+				Thread.sleep(sleep);
+			}
 			Thread.sleep(sleepTime);
 		} catch (InterruptedException e) {
 			e.printStackTrace();

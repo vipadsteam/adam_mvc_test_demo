@@ -47,11 +47,12 @@ public class AdamTestStep4_2 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doService " + ThreadLocalHolder.getRequestLogFlag());
+		System.out.println(STEP + " doService " + ThreadLocalHolder.getRequestLogFlag());
 		String url = urlBase1 + ip + urlBase2;
-		TestHttpFutureCallback callback1 = httpTestClient.call(url);
-		TestHttpFutureCallback callback2 = httpTestClient.call(url);
-		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor());
+		TestHttpFutureCallback callback1 = httpTestClient.call(url + "?sleep=1010");
+		TestHttpFutureCallback callback2 = httpTestClient.call(url + "?sleep=1000");
+		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor(), true);
+//		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor());
 		callbackCombiner.combine(callback1);
 		callbackCombiner.combine(callback2);
 		return callbackCombiner;
@@ -59,19 +60,19 @@ public class AdamTestStep4_2 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doSuccess(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doSuccess " + ThreadLocalHolder.getRequestLogFlag());
+		System.out.println(STEP + " doSuccess " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doFail(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doFail " + ThreadLocalHolder.getRequestLogFlag());
+		System.out.println(STEP + " doFail " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doComplate(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doComplate " + ThreadLocalHolder.getRequestLogFlag());
+		System.out.println(STEP + " doComplate " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
