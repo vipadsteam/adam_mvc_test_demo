@@ -1,5 +1,7 @@
 package org.adam.asyn.web.common.log;
 
+import java.util.Arrays;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.adam.client.ILogService;
@@ -22,7 +24,7 @@ public class LogService implements ILogService {
 	 */
 	@Override
 	public void sendRunningAccountLog(Object obj) {
-//		log.info("running_account:" + ra() + JSON.toJSONString(obj));
+		// log.info("running_account:" + ra() + JSON.toJSONString(obj));
 	}
 
 	/*
@@ -35,7 +37,9 @@ public class LogService implements ILogService {
 	 */
 	@Override
 	public void sendRunningAccountLog(Object income, ResultVo output, String methodName, String remark, Long beginTime) {
-//		log.info("running_account: " + ra() + getFormatParamString(income, output, methodName, remark));
+		if ("begin".equals(remark)) {
+			sendInfoLog(methodName);
+		}
 	}
 
 	/*
@@ -71,7 +75,7 @@ public class LogService implements ILogService {
 	 */
 	@Override
 	public void sendEndRequestLog(Object obj) {
-		log.info("request_end_log: " + ra() + JSON.toJSONString(obj));
+		// log.info("request_end_log: " + ra() + JSON.toJSONString(obj));
 	}
 
 	/*
@@ -140,12 +144,21 @@ public class LogService implements ILogService {
 		return true;
 	}
 
+	public void sendInfoLog(String... strs) {
+		log.info(Arrays.stream(strs).map(str -> (str = str + " ")).reduce("", String::concat) + " " + ra() + " logFlag:" + ThreadLocalHolder.getRequestLogFlag() + " tId:" + Thread.currentThread().getId());
+	}
+
+	public static void main(String[] args) {
+		LogService ls = new LogService();
+		ls.sendInfoLog(new String[] { "aaa", "bbb", "ccc" });
+	}
+
 	/**
 	 * @return
 	 */
 	private String ra() {
 		String runningAccount = ThreadLocalHolder.getRunningAccount();
-		return "ra:" + runningAccount + ", ";
+		return runningAccount + " ";
 	}
 
 	/**

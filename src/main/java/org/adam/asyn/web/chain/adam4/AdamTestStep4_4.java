@@ -31,36 +31,28 @@ import org.springframework.web.context.request.async.DeferredResult;;
 @ServiceErrorCode(WebMVCConstants.ADAM_TEST_ERROR)
 public class AdamTestStep4_4 implements IService<RequestMsg, DeferredResult<ResponseMsg<String>>> {
 
-	private static final Log log = LogFactory.getLog(AdamTestStep4_4.class);
-
-	private static final String STEP = "step 4-4 ";
-
 	@Autowired
 	private HttpTestClient httpTestClient;
 
 	@Override
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doService " + ThreadLocalHolder.getRequestLogFlag());
-		String url = "http://127.0.0.1:8080/api/request1?param=" + income.getParam();
+		String url = "http://127.0.0.1:8080/test/request?sleep=100";
 		TestHttpFutureCallback callback = httpTestClient.call(url);
 		return callback;
 	}
 
 	@Override
 	public AbsCallbacker doSuccess(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doSuccess " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doFail(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doFail " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doComplate(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP+" doComplate " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 

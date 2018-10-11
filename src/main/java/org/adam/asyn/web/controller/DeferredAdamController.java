@@ -116,6 +116,32 @@ public class DeferredAdamController {
 	}
 
 	/**
+	 * 第五种方法：全异步并发支持链分支
+	 * 
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/request5")
+	@ResponseBody
+	@RpcService
+	public DeferredResult<ResponseMsg<String>> request5(RequestMsg req) {
+		logger.debug("request5:请求参数{}", req.getParam());
+		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
+		ResultVo<DeferredResult<ResponseMsg<String>>> output1 = new ResultVo<DeferredResult<ResponseMsg<String>>>();
+		ResultVo<DeferredResult<ResponseMsg<String>>> output2 = new ResultVo<DeferredResult<ResponseMsg<String>>>();
+		output1.setData(result);
+		output2.setData(result);
+		
+		AdamFuture future = new AdamFuture(2);
+		output1.setFuture(future);
+		output2.setFuture(future);
+		serviceChain.doServer(req, output1, WebMVCConstants.ADAM_TEST5);
+		serviceChain.doServer(req, output2, WebMVCConstants.ADAM_TEST0);
+		future.work();
+		return result;
+	}
+
+	/**
 	 * @param req
 	 * @return
 	 */

@@ -20,9 +20,15 @@ import org.springframework.web.context.request.async.DeferredResult;
  */
 public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, DeferredResult<ResponseMsg<String>>> {
 
-	public TestHttpFutureCallback() {
+	private String className;
+
+	private String methodName;
+
+	public TestHttpFutureCallback(String className, String methodName) {
 		super(Thread.currentThread().getId());
 		this.tpe = TestThreadPool.instance().getThreadPoolExecutor();
+		this.className = className;
+		this.methodName = methodName;
 	}
 
 	/*
@@ -34,7 +40,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealSuccess(HttpResponse response) {
-		System.out.println(Thread.currentThread().getId() + ":test success");
+		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test success");
 		HttpEntity entity = response.getEntity();
 		String json;
 		try {
@@ -53,7 +59,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealFail(Exception e) {
-		System.out.println(Thread.currentThread().getId() + ":test fail");
+		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test fail");
 		if (null != e) {
 			e.printStackTrace();
 		}
@@ -68,7 +74,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealComplete(HttpResponse result, Exception e) {
-		System.out.println(Thread.currentThread().getId() + ":test complete");
+		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test complete");
 	}
 
 	@Override

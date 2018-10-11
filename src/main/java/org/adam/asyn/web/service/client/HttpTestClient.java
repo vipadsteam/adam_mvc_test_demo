@@ -47,7 +47,7 @@ public class HttpTestClient implements InitializingBean {
 	private LogService logService;
 
 	private CloseableHttpAsyncClient httpAsyncClient;
-	
+
 	private CloseableHttpClient httpclientSyn;
 
 	private Header header;
@@ -64,6 +64,9 @@ public class HttpTestClient implements InitializingBean {
 	 * @return
 	 */
 	public TestHttpFutureCallback call(String url) {
+		StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+		StackTraceElement ste = stes[2];
+		
 		CloseableHttpAsyncClient httpAsyncClient = getHttpClient();
 		HttpPost httppost = new HttpPost(url);
 		httppost.setConfig(config);
@@ -71,7 +74,7 @@ public class HttpTestClient implements InitializingBean {
 		TestHttpFutureCallback callback = null;
 		try {
 			// 请求发送
-			callback = new TestHttpFutureCallback();
+			callback = new TestHttpFutureCallback(ste.getClassName(), ste.getMethodName());
 			httpAsyncClient.execute(httppost, callback);
 		} catch (Exception e) {
 			String logStr = AdamExceptionUtils.getStackTrace(e);
@@ -80,7 +83,7 @@ public class HttpTestClient implements InitializingBean {
 
 		return callback;
 	}
-	
+
 	/**
 	 * 调用VRE
 	 * 
@@ -140,14 +143,14 @@ public class HttpTestClient implements InitializingBean {
 		}
 		return this.httpclientSyn;
 	}
-	
+
 	private synchronized void init() throws Exception {
 		if (null != this.httpAsyncClient && null != this.httpclientSyn) {
 			return;
 		}
 		this.httpAsyncClient = initAsynHttpClient(40, false);
 		this.header = new BasicHeader(HTTP.CONTENT_TYPE, "application/x-www-form-urlencoded");
-		
+
 		HttpClientBuilder builder = HttpClientBuilder.create().setConnectionTimeToLive(60, TimeUnit.SECONDS) // 60秒后关闭连接
 				.setMaxConnTotal(1000) // 设置最大1000个并发连接上限
 				.setMaxConnPerRoute(1000); // 每个域1000个连接上限

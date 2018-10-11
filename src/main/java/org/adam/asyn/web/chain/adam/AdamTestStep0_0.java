@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.adam.asyn.web.chain.adam3;
+package org.adam.asyn.web.chain.adam;
 
 import org.adam.asyn.web.common.WebMVCConstants;
 import org.adam.asyn.web.request.RequestMsg;
@@ -20,10 +20,10 @@ import org.springframework.web.context.request.async.DeferredResult;;
  *
  */
 @Component
-@ServiceType(WebMVCConstants.ADAM_TEST3)
+@ServiceType(WebMVCConstants.ADAM_TEST0)
 @ServiceOrder(10)
 @ServiceErrorCode(WebMVCConstants.ADAM_TEST_ERROR)
-public class AdamTestStep3_1 implements IService<RequestMsg, DeferredResult<ResponseMsg<String>>> {
+public class AdamTestStep0_0 implements IService<RequestMsg, DeferredResult<ResponseMsg<String>>> {
 
 	@Override
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {

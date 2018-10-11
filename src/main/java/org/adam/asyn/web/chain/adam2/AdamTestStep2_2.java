@@ -8,13 +8,10 @@ import org.adam.asyn.web.request.RequestMsg;
 import org.adam.asyn.web.response.ResponseMsg;
 import org.adam.asyn.web.service.callback.TestHttpFutureCallback;
 import org.adam.asyn.web.service.client.HttpTestClient;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.adam.common.bean.ResultVo;
 import org.springframework.adam.common.bean.annotation.service.ServiceErrorCode;
 import org.springframework.adam.common.bean.annotation.service.ServiceOrder;
 import org.springframework.adam.common.bean.annotation.service.ServiceType;
-import org.springframework.adam.common.utils.ThreadLocalHolder;
 import org.springframework.adam.service.AbsCallbacker;
 import org.springframework.adam.service.IService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +28,6 @@ import org.springframework.web.context.request.async.DeferredResult;;
 @ServiceErrorCode(WebMVCConstants.ADAM_TEST_ERROR)
 public class AdamTestStep2_2 implements IService<RequestMsg, DeferredResult<ResponseMsg<String>>> {
 
-	private static final Log log = LogFactory.getLog(AdamTestStep2_2.class);
-
-	private static final String STEP = "step 2-2 ";
-
 	public volatile static String urlBase1 = "http://";
 	public volatile static String ip = "127.0.0.1";
 	public volatile static String urlBase2 = ":8080/test/request";
@@ -45,7 +38,6 @@ public class AdamTestStep2_2 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP + " doService " + ThreadLocalHolder.getRequestLogFlag());
 		String url = urlBase1 + ip + urlBase2;
 		if ("Y".equals(type)) {
 			TestHttpFutureCallback callback = httpTestClient.call(url);
@@ -59,19 +51,16 @@ public class AdamTestStep2_2 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doSuccess(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP + " doSuccess " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doFail(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP + " doFail " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
 	@Override
 	public AbsCallbacker doComplate(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		System.out.println(STEP + " doComplate " + ThreadLocalHolder.getRequestLogFlag());
 		return null;
 	}
 
