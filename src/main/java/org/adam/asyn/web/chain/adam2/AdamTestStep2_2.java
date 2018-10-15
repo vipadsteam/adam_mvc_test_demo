@@ -40,7 +40,7 @@ public class AdamTestStep2_2 implements IService<RequestMsg, DeferredResult<Resp
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
 		String url = urlBase1 + ip + urlBase2;
 		if ("Y".equals(type)) {
-			TestHttpFutureCallback callback = httpTestClient.call(url);
+			TestHttpFutureCallback callback = httpTestClient.call(url + "?sleep=1000");
 			return callback;
 		} else {
 			String result = httpTestClient.callSyn(url);
