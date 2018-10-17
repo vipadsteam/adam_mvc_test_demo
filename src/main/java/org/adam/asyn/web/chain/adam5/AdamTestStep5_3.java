@@ -34,7 +34,7 @@ public class AdamTestStep5_3 implements IService<RequestMsg, DeferredResult<Resp
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
 		ResultVo<DeferredResult<ResponseMsg<String>>> newResultVo = new ResultVo<>();
 		newResultVo.setData(output.getData());
-		AbsCallbacker callbacker = serviceChain.doServer(income, newResultVo, output, WebMVCConstants.ADAM_TEST6);
+		AbsCallbacker callbacker = serviceChain.doServerWithCallback(income, newResultVo, WebMVCConstants.ADAM_TEST6);
 		return callbacker;
 	}
 

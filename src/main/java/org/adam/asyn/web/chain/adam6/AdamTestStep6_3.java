@@ -40,12 +40,14 @@ public class AdamTestStep6_3 implements IService<RequestMsg, DeferredResult<Resp
 		ResultVo<DeferredResult<ResponseMsg<String>>> newResultVo2 = new ResultVo<>();
 		newResultVo2.setData(output.getData());
 
-		AbsCallbacker callback1 = serviceChain.doServer(income, newResultVo1, output, WebMVCConstants.ADAM_TEST7);
-		AbsCallbacker callback2 = serviceChain.doServer(income, newResultVo2, output, WebMVCConstants.ADAM_TEST8);
+		AbsCallbacker callback1 = serviceChain.doServerWithCallback(income, newResultVo1, WebMVCConstants.ADAM_TEST7);
+		AbsCallbacker callback2 = serviceChain.doServerWithCallback(income, newResultVo2, WebMVCConstants.ADAM_TEST8);
 		// CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor(), true);
 		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor());
 		callbackCombiner.combine(callback1);
 		callbackCombiner.combine(callback2);
+//		Thread.sleep(10000);
+//		System.out.println("ccccccccccccccccc");
 		return callbackCombiner;
 	}
 
