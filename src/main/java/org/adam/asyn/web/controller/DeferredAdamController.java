@@ -96,7 +96,6 @@ public class DeferredAdamController {
 		return result;
 	}
 	
-
 	/**
 	 * 第三种方法：全异步并发
 	 * 
@@ -138,6 +137,25 @@ public class DeferredAdamController {
 		serviceChain.doServer(req, output1, WebMVCConstants.ADAM_TEST5);
 		serviceChain.doServer(req, output2, WebMVCConstants.ADAM_TEST0);
 		future.work();
+		return result;
+	}
+	
+
+	/**
+	 * 第六种方法：支持请求重发
+	 * 
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/request9")
+	@ResponseBody
+	@RpcService
+	public DeferredResult<ResponseMsg<String>> request9(RequestMsg req) {
+		logger.debug("request3:请求参数{}", req.getParam());
+		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
+		ResultVo<DeferredResult<ResponseMsg<String>>> output = new ResultVo<DeferredResult<ResponseMsg<String>>>();
+		output.setData(result);
+		serviceChain.doServer(req, output, WebMVCConstants.ADAM_TEST9);
 		return result;
 	}
 

@@ -7,14 +7,10 @@ import java.nio.charset.CodingErrorAction;
 import java.util.concurrent.TimeUnit;
 
 import org.adam.asyn.web.common.log.LogService;
-import org.adam.asyn.web.service.callback.TestHttpFutureCallback;
 import org.adam.asyn.web.service.callback.TestRetryHttpFutureCallback;
 import org.apache.http.Consts;
 import org.apache.http.Header;
-import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.config.ConnectionConfig;
 import org.apache.http.config.MessageConstraints;
@@ -31,8 +27,8 @@ import org.apache.http.nio.conn.NoopIOSessionStrategy;
 import org.apache.http.nio.conn.SchemeIOSessionStrategy;
 import org.apache.http.nio.reactor.ConnectingIOReactor;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.springframework.adam.common.utils.AdamExceptionUtils;
+import org.springframework.adam.service.IAdamSender;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +38,7 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-public class HttpTestClient implements InitializingBean {
+public class HttpTestRetryClient implements InitializingBean, IAdamSender<TestRetryHttpFutureCallback> {
 
 	@Autowired
 	private LogService logService;
@@ -55,51 +51,37 @@ public class HttpTestClient implements InitializingBean {
 
 	private volatile RequestConfig config;
 
+	@Override
+	public boolean doSend(TestRetryHttpFutureCallback callbacker) {
+		CloseableHttpAsyncClient httpAsyncClient = getHttpClient();
+		System.out.println("------sending retry client");
+		httpAsyncClient.execute(callbacker.getParam(), callbacker);
+		return true;
+	}
+	
 	/**
 	 * @return
 	 */
-	public TestHttpFutureCallback call(String url) {
+	public TestRetryHttpFutureCallback call(String url) {
 		StackTraceElement[] stes = Thread.currentThread().getStackTrace();
 		StackTraceElement ste = stes[2];
 		
-		CloseableHttpAsyncClient httpAsyncClient = getHttpClient();
 		HttpPost httppost = new HttpPost(url);
 		httppost.setConfig(config);
 		httppost.setHeader(header);
-		TestHttpFutureCallback callback = null;
+		TestRetryHttpFutureCallback callback = null;
 		try {
 			// 请求发送
-			callback = new TestHttpFutureCallback(ste.getClassName(), ste.getMethodName());
-			httpAsyncClient.execute(httppost, callback);
+			callback = new TestRetryHttpFutureCallback(ste.getClassName(), ste.getMethodName());
+			callback.setParam(httppost);
+			callback.setSender(this);
+			doSend(callback);
 		} catch (Exception e) {
 			String logStr = AdamExceptionUtils.getStackTrace(e);
 			logService.sendTechnologyErrorAccountLog("", logStr, url, "test http发送系统异常");
 		}
-		
-		return callback;
-	}
 
-	/**
-	 * @return
-	 */
-	public String callSyn(String url) {
-		CloseableHttpClient httpclient = getHttpClientSyn();
-		HttpPost httppost = new HttpPost(url);
-		httppost.setConfig(config);
-		httppost.setHeader(header);
-		HttpGet httpget = new HttpGet(url);
-		httpget.setConfig(config);
-		CloseableHttpResponse response = null;
-		String result = null;
-		try {
-			response = httpclient.execute(httpget);
-			HttpEntity entity = response.getEntity();
-			result = EntityUtils.toString(entity, "utf-8");
-		} catch (Exception e) {
-			String logStr = AdamExceptionUtils.getStackTrace(e);
-			logService.sendTechnologyErrorAccountLog("", logStr, url, "test http发送系统异常");
-		}
-		return result;
+		return callback;
 	}
 
 	/**
@@ -119,18 +101,6 @@ public class HttpTestClient implements InitializingBean {
 			}
 		}
 		return this.httpAsyncClient;
-	}
-
-	private CloseableHttpClient getHttpClientSyn() {
-		if (null == this.httpclientSyn) {
-			try {
-				init();
-			} catch (Exception e) {
-				String logStr = AdamExceptionUtils.getStackTrace(e);
-				logService.sendTechnologyErrorAccountLog("", logStr, "", "HttpClientSyn系统异常");
-			}
-		}
-		return this.httpclientSyn;
 	}
 
 	private synchronized void init() throws Exception {
@@ -188,4 +158,5 @@ public class HttpTestClient implements InitializingBean {
 		httpAsyncClient.start();
 		return httpAsyncClient;
 	}
+
 }
