@@ -39,15 +39,22 @@ public class AdamTestStep6_3 implements IService<RequestMsg, DeferredResult<Resp
 		newResultVo1.setData(output.getData());
 		ResultVo<DeferredResult<ResponseMsg<String>>> newResultVo2 = new ResultVo<>();
 		newResultVo2.setData(output.getData());
+		ResultVo<DeferredResult<ResponseMsg<String>>> newResultVo3 = new ResultVo<>();
+		newResultVo2.setData(output.getData());
 
-		AbsCallbacker callback1 = serviceChain.doServerWithCallback(income, newResultVo1, WebMVCConstants.ADAM_TEST7);
-		AbsCallbacker callback2 = serviceChain.doServerWithCallback(income, newResultVo2, WebMVCConstants.ADAM_TEST8);
-		// CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor(), true);
-		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor());
+		AbsCallbacker callback1 = serviceChain.doServerWithCallback(income, newResultVo1, 20, WebMVCConstants.ADAM_TEST7);
+		AbsCallbacker callback3 = serviceChain.doServerWithCallback(income, newResultVo3, TestThreadPool.instance().getThreadPoolExecutor(), WebMVCConstants.ADAM_TEST10);
+		AbsCallbacker callback2 = serviceChain.doServerWithCallback(income, newResultVo2, TestThreadPool.instance().getThreadPoolExecutor(), WebMVCConstants.ADAM_TEST8);
+		// CallbackCombiner callbackCombiner = new
+		// CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor(),
+		// true);
+		// CallbackCombiner callbackCombiner = new
+		// CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor());
+		CallbackCombiner callbackCombiner = new CallbackCombiner();
 		callbackCombiner.combine(callback1);
 		callbackCombiner.combine(callback2);
-//		Thread.sleep(10000);
-//		System.out.println("ccccccccccccccccc");
+		callbackCombiner.combine(callback3);
+		// System.out.println("ccccccccccccccccc");
 		return callbackCombiner;
 	}
 

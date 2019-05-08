@@ -32,7 +32,7 @@ public class AdamTestStep7_3 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		throw new RuntimeException();
+		return null;
 	}
 
 	@Override

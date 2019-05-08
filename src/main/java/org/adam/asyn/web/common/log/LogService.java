@@ -20,17 +20,6 @@ public class LogService implements ILogService {
 	 * (non-Javadoc)
 	 * 
 	 * @see org.springframework.adam.client.sevendays.ILogService#
-	 * sendRunningAccountLog(java.lang.Object)
-	 */
-	@Override
-	public void sendRunningAccountLog(Object obj) {
-		// log.info("running_account:" + ra() + JSON.toJSONString(obj));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.adam.client.sevendays.ILogService#
 	 * sendRunningAccountLog(java.lang.Object,
 	 * org.springframework.adam.common.bean.ResultVo, java.lang.String,
 	 * java.lang.String, java.lang.Long)
@@ -40,91 +29,6 @@ public class LogService implements ILogService {
 		if ("begin".equals(remark)) {
 			sendInfoLog(methodName);
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.adam.client.sevendays.ILogService#sendRequestLog(java
-	 * .lang.Object)
-	 */
-	@Override
-	public void sendRequestLog(Object obj) {
-		log.info("request_log: " + ra() + JSON.toJSONString(obj));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.adam.client.sevendays.ILogService#sendBeginRequestLog
-	 * (java.lang.Object)
-	 */
-	@Override
-	public void sendBeginRequestLog(Object obj) {
-		log.info("request_begin_log: " + ra() + JSON.toJSONString(obj));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.adam.client.sevendays.ILogService#sendEndRequestLog(
-	 * java.lang.Object)
-	 */
-	@Override
-	public void sendEndRequestLog(Object obj) {
-		// log.info("request_end_log: " + ra() + JSON.toJSONString(obj));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.adam.client.sevendays.ILogService#sendErrorAccountLog
-	 * (java.lang.Object)
-	 */
-	@Override
-	public void sendErrorAccountLog(Object obj) {
-		log.error("error_account_log: " + ra() + JSON.toJSONString(obj));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.adam.client.sevendays.ILogService#sendErrorAccountLog
-	 * (java.lang.Object, java.lang.Object, java.lang.String, java.lang.String,
-	 * java.lang.String)
-	 */
-	@Override
-	public void sendErrorAccountLog(Object income, Object output, String methodName, String type, String remark) {
-		log.error("error_account_log: " + ra() + getFormatParamString(income, output, methodName, remark));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.adam.client.sevendays.ILogService#
-	 * sendBussinessErrorAccountLog(java.lang.Object, java.lang.Object,
-	 * java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void sendBussinessErrorAccountLog(Object income, Object output, String methodName, String remark) {
-		log.error("bussiness_error_account_log: " + ra() + getFormatParamString(income, output, methodName, remark));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.adam.client.sevendays.ILogService#
-	 * sendOverTimeAccountLog(java.lang.Object, java.lang.Object,
-	 * java.lang.String, java.lang.String)
-	 */
-	@Override
-	public void sendOverTimeAccountLog(Object income, Object output, String methodName, String remark) {
-		log.error("overtime_error_account_log: " + ra() + getFormatParamString(income, output, methodName, remark));
 	}
 
 	/*

@@ -91,7 +91,7 @@ public class DeferredAdamController {
 		// 开始工作
 		future.work();
 		System.out.println("aaaaaaaaaa");
-		future.waitEnd();
+		future.waitEnd(10l, TimeUnit.MINUTES);
 		System.out.println("bbbbbbbbbb");
 		return result;
 	}

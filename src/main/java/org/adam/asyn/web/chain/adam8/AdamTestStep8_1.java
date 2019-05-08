@@ -27,6 +27,7 @@ public class AdamTestStep8_1 implements IService<RequestMsg, DeferredResult<Resp
 
 	@Override
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
+		Thread.sleep(5000);
 		return null;
 	}
 

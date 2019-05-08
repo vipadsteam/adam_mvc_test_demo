@@ -42,11 +42,11 @@ public class AdamTestStep7_2 implements IService<RequestMsg, DeferredResult<Resp
 	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
 		String url = urlBase1 + ip + urlBase2;
 		TestHttpFutureCallback callback1 = httpTestClient.call(url + "?sleep=1010");
-		TestHttpFutureCallback callback2 = httpTestClient.call(url + "?sleep=1000");
+//		TestHttpFutureCallback callback2 = httpTestClient.call(url + "?sleep=1000");
 		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor(), true);
 //		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor());
 		callbackCombiner.combine(callback1);
-		callbackCombiner.combine(callback2);
+//		callbackCombiner.combine(callback2);
 		return callbackCombiner;
 	}
 

@@ -8,6 +8,8 @@ package org.adam.asyn.web.common;
  *
  */
 public class WebMVCConstants {
+	public static final String ADAM_TEST11 = "adam_test11";
+	public static final String ADAM_TEST10 = "adam_test10";
 	public static final String ADAM_TEST9 = "adam_test9";
 	public static final String ADAM_TEST8 = "adam_test8";
 	public static final String ADAM_TEST7 = "adam_test7";

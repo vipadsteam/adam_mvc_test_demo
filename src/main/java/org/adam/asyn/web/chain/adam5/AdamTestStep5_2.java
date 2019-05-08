@@ -45,6 +45,7 @@ public class AdamTestStep5_2 implements IService<RequestMsg, DeferredResult<Resp
 		TestHttpFutureCallback callback2 = httpTestClient.call(url + "?sleep=1000");
 //		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor(), true);
 		CallbackCombiner callbackCombiner = new CallbackCombiner(TestThreadPool.instance().getThreadPoolExecutor());
+//		CallbackCombiner callbackCombiner = new CallbackCombiner();
 		callbackCombiner.combine(callback1);
 		callbackCombiner.combine(callback2);
 		return callbackCombiner;
