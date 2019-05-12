@@ -31,16 +31,6 @@ public class AdamTestStep1_1 implements IService<RequestMsg, DeferredResult<Resp
 	}
 
 	@Override
-	public AbsCallbacker doSuccess(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		return null;
-	}
-
-	@Override
-	public AbsCallbacker doFail(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
-		return null;
-	}
-
-	@Override
 	public AbsCallbacker doComplate(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
 		ResponseMsg<String> result = new ResponseMsg<String>();
 		result.setMsg(output.getResultMsg());

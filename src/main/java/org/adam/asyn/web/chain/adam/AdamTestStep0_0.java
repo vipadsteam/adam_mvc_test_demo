@@ -26,6 +26,11 @@ import org.springframework.web.context.request.async.DeferredResult;;
 public class AdamTestStep0_0 implements IService<RequestMsg, DeferredResult<ResponseMsg<String>>> {
 
 	@Override
+	public AbsCallbacker doService(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
+		return null;
+	}
+
+	@Override
 	public AbsCallbacker doSuccess(RequestMsg income, ResultVo<DeferredResult<ResponseMsg<String>>> output) throws Exception {
 		return null;
 	}
