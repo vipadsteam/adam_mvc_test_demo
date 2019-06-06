@@ -3,11 +3,17 @@
  */
 package org.adam.asyn.web.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.adam.asyn.web.chain.adam1.AdamTestStep1_2;
 import org.adam.asyn.web.request.RequestMsg;
+import org.adam.asyn.web.service.BeanService;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.adam.common.utils.AdamRegexUtil;
+import org.springframework.adam.common.utils.context.SpringContextUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,11 +34,25 @@ public class MyRestController {
 	 * @param req
 	 * @return
 	 */
+	@RequestMapping("/aa")
+	@ResponseBody
+	public String test() {
+		Map<String, String> propertyMap = new HashMap<>();
+		propertyMap.put("result", "success");
+		SpringContextUtils.addBean(BeanService.class, "beanService", propertyMap);
+		String result = ((BeanService) SpringContextUtils.getBean("beanService")).getResult();
+		return result;
+	}
+
+	/**
+	 * @param req
+	 * @return
+	 */
 	@RequestMapping("/request")
 	@ResponseBody
 	public String request(int sleep) {
 		try {
-			if(sleep>0){
+			if (sleep > 0) {
 				Thread.sleep(sleep);
 			}
 			Thread.sleep(sleepTime);
