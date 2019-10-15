@@ -2,7 +2,7 @@ package org.adam.asyn.web.service.callback;
 
 import org.asynchttpclient.AsyncHandler;
 import org.asynchttpclient.HttpResponseBodyPart;
-import org.asynchttpclient.HttpResponseHeaders;
+import io.netty.handler.codec.http.HttpHeaders;
 import org.asynchttpclient.HttpResponseStatus;
 import org.asynchttpclient.Response;
 import org.springframework.adam.service.AbsCallbacker;
@@ -29,7 +29,7 @@ public abstract class AsynHttpFutureCallback<T1, T2> extends AbsCallbacker<Respo
 	}
 
 	@Override
-	public State onHeadersReceived(HttpResponseHeaders headers) throws Exception{
+	public State onHeadersReceived(HttpHeaders headers) throws Exception{
         builder.accumulate(headers);
 		return State.CONTINUE;
 	}
