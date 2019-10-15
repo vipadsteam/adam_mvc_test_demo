@@ -12,8 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  *
  */
 @SpringBootApplication
-// @ComponentScan(basePackages = { "org.springframework.adam", "org.adam.asyn"
-// })
+// @ComponentScan(basePackages = { "org.springframework.adam", "org.adam.asyn" })
 @ComponentScan()
 public class Application {
 
