@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.adam.asyn</groupId>
@@ -26,7 +27,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>adam_asyn</artifactId>
-			<version>3.0.2-SNAPSHOT</version>
+			<version>3.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
@@ -93,6 +94,18 @@
 			<groupId>org.openjdk.jmh</groupId>
 			<artifactId>jmh-generator-annprocess</artifactId>
 			<version>1.14.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.auto.service</groupId>
+			<artifactId>auto-service</artifactId>
+			<version>1.0-rc2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.adam</groupId>
+			<artifactId>gensource</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
