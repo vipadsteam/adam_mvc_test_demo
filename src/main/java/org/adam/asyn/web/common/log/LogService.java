@@ -25,22 +25,21 @@ public class LogService implements ILogService {
 	 * java.lang.String, java.lang.Long)
 	 */
 	@Override
-	public void sendRunningAccountLog(Object income, ResultVo output, String methodName, String remark, Long beginTime) {
+	public void sendRunningAccountLog(Object income, ResultVo output, String methodName, String remark,
+			Long beginTime) {
 		if ("begin".equals(remark)) {
 			sendInfoLog(methodName);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.adam.client.sevendays.ILogService#
-	 * sendTechnologyErrorAccountLog(java.lang.Object, java.lang.Object,
-	 * java.lang.String, java.lang.String)
-	 */
 	@Override
-	public void sendTechnologyErrorAccountLog(Object income, Object output, String methodName, String remark) {
-		log.error("technology_error_account_log: " + ra() + getFormatParamString(income, output, methodName, remark));
+	public void sendBeginRequestLog(Object obj) {
+		log.info(ILogService.obj2Str(obj));
+	}
+
+	@Override
+	public void sendEndRequestLog(Object obj) {
+		log.info(ILogService.obj2Str(obj));
 	}
 
 	@Override
@@ -49,12 +48,13 @@ public class LogService implements ILogService {
 	}
 
 	public void sendInfoLog(String... strs) {
-		log.info(Arrays.stream(strs).map(str -> (str = str + " ")).reduce("", String::concat) + " " + ra() + " logFlag:" + ThreadLocalHolder.getRequestLogFlag() + " tId:" + Thread.currentThread().getId());
+		log.info(Arrays.stream(strs).map(str -> (str = str + " ")).reduce("", String::concat) + " " + ra() + " logFlag:"
+				+ ThreadLocalHolder.getRequestLogFlag() + " tId:" + Thread.currentThread().getId());
 	}
 
-	public static void main(String[] args) {
-		LogService ls = new LogService();
-		ls.sendInfoLog(new String[] { "aaa", "bbb", "ccc" });
+	public void sendErrorLog(String... strs) {
+		log.error(Arrays.stream(strs).map(str -> (str = str + " ")).reduce("", String::concat) + " " + ra()
+				+ " logFlag:" + ThreadLocalHolder.getRequestLogFlag() + " tId:" + Thread.currentThread().getId());
 	}
 
 	/**
@@ -63,18 +63,6 @@ public class LogService implements ILogService {
 	private String ra() {
 		String runningAccount = ThreadLocalHolder.getRunningAccount();
 		return runningAccount + " ";
-	}
-
-	/**
-	 * @param income
-	 * @param output
-	 * @param methodName
-	 * @param remark
-	 * @return
-	 */
-	private String getFormatParamString(Object income, Object output, String methodName, String remark) {
-		String tmpStr = "///methodName: " + methodName + "///remark: " + remark;
-		return tmpStr + "///income: " + JSON.toJSONString(income) + "///output: " + JSON.toJSONString(output);
 	}
 
 }

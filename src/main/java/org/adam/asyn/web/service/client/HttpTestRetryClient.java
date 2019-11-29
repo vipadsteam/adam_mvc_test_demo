@@ -78,7 +78,7 @@ public class HttpTestRetryClient implements InitializingBean, IAdamSender<TestRe
 			doSend(callback);
 		} catch (Exception e) {
 			String logStr = AdamExceptionUtils.getStackTrace(e);
-			logService.sendTechnologyErrorAccountLog("", logStr, url, "test http发送系统异常");
+			logService.sendErrorLog("", logStr, url, "test http发送系统异常");
 		}
 
 		return callback;
@@ -96,7 +96,7 @@ public class HttpTestRetryClient implements InitializingBean, IAdamSender<TestRe
 					init();
 				} catch (Exception e) {
 					String logStr = AdamExceptionUtils.getStackTrace(e);
-					logService.sendTechnologyErrorAccountLog("", logStr, "", "HttpClient系统异常");
+					logService.sendErrorLog("", logStr, "", "HttpClient系统异常");
 				}
 			}
 		}
