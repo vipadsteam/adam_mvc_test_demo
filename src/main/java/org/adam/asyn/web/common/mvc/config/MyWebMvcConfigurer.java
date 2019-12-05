@@ -64,13 +64,14 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
 				String result = ILogService.obj2Str(deferredResult.getResult());
 				System.out.println(Thread.currentThread().getId() + " my mvc response is : " + result);
-				if (null != logService && logService.isNeedLog()) {
+				if (ThreadLocalHolder.getStatus() >= 0 && null != logService && logService.isNeedLog()) {
 					StringBuilder argSB = new StringBuilder(2048);
 					argSB.append("used time:");
 					argSB.append(AdamTimeUtil.getNow() - ThreadLocalHolder.getBegin());
 					argSB.append(AdamSysConstants.LINE_SEPARATOR);
 					argSB.append(ILogService.obj2Str(deferredResult.getResult()));
 					logService.sendEndRequestLog(argSB);
+					ThreadLocalHolder.setStatus(-1);
 				}
 			}
 		});
