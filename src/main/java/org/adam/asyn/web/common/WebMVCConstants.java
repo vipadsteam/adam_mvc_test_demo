@@ -20,6 +20,7 @@ public class WebMVCConstants {
 	public static final String ADAM_TEST2 = "adam_test2";
 	public static final String ADAM_TEST1 = "adam_test1";
 	public static final String ADAM_TEST0 = "adam_test0";
+	public static final String ADAM_TEST_BP = "adam_test_BP";
 	public static final String NETTY_TEST = "netty_test";
 	public static final String ADAM_TEST_ERROR = "555";
 }

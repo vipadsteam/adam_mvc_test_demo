@@ -9,9 +9,7 @@ import org.springframework.adam.common.bean.ResultVo;
 import org.springframework.adam.common.utils.ThreadLocalHolder;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
-
-@Component
+//@Component
 public class LogService implements ILogService {
 
 	private static final Log log = LogFactory.getLog(LogService.class);
@@ -34,12 +32,18 @@ public class LogService implements ILogService {
 
 	@Override
 	public void sendBeginRequestLog(Object obj) {
-		log.info(ILogService.obj2Str(obj));
+		log.info(objToStr(obj));
 	}
 
 	@Override
 	public void sendEndRequestLog(Object obj) {
-		log.info(ILogService.obj2Str(obj));
+		log.info(objToStr(obj));
+	}
+
+	@Override
+	public void sendBackPressureLog(Object... objs) {
+		StringBuilder msg = new StringBuilder();
+		log.info(objsToStr(msg, objs));
 	}
 
 	@Override

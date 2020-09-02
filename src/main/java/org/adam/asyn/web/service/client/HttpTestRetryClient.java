@@ -40,7 +40,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HttpTestRetryClient implements InitializingBean, IAdamSender<TestRetryHttpFutureCallback> {
 
-	@Autowired
+	@Autowired(required = false)
 	private LogService logService;
 
 	private CloseableHttpAsyncClient httpAsyncClient;

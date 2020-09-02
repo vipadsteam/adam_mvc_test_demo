@@ -1,8 +1,8 @@
+
 package org.adam.asyn.web.common.mvc.config;
 
 import java.util.List;
 
-import org.adam.asyn.web.common.log.LogService;
 import org.springframework.adam.client.ILogService;
 import org.springframework.adam.common.bean.contants.AdamSysConstants;
 import org.springframework.adam.common.utils.AdamTimeUtil;
@@ -38,14 +38,12 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
 	@Override
 	public void configurePathMatch(PathMatchConfigurer configurer) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
@@ -63,7 +61,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 					throws Exception {
 
 				String result = ILogService.obj2Str(deferredResult.getResult());
-				System.out.println(Thread.currentThread().getId() + " my mvc response is : " + result);
+//				System.out.println(Thread.currentThread().getId() + " my mvc response is : " + result);
 				if (ThreadLocalHolder.getStatus() >= 0 && null != logService && logService.isNeedLog()) {
 					StringBuilder argSB = new StringBuilder(2048);
 					argSB.append("used time:");
@@ -79,44 +77,37 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
 	@Override
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
@@ -127,43 +118,38 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
 
 	@Override
 	public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
-		// TODO Auto-generated method stub
-
+		// nothing to do
 	}
 
 	@Override
 	public Validator getValidator() {
-		// TODO Auto-generated method stub
+		// nothing to do
 		return null;
 	}
 
 	@Override
 	public MessageCodesResolver getMessageCodesResolver() {
-		// TODO Auto-generated method stub
+		// nothing to do
 		return null;
 	}
 

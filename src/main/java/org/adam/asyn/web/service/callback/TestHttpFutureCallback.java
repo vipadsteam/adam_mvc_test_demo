@@ -40,7 +40,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealSuccess(HttpResponse response) {
-		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test success");
+//		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test success");
 		HttpEntity entity = response.getEntity();
 		String json;
 		try {
@@ -59,7 +59,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealFail(Exception e) {
-		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test fail");
+//		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test fail");
 		if (null != e) {
 			e.printStackTrace();
 		}
@@ -74,7 +74,7 @@ public class TestHttpFutureCallback extends HttpFutureCallback<RequestMsg, Defer
 	 */
 	@Override
 	public void dealComplete(HttpResponse result, Exception e) {
-		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test complete");
+//		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":test complete");
 	}
 
 	@Override

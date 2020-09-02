@@ -4,7 +4,6 @@
 package org.adam.asyn.web.chain.adam1;
 
 import org.adam.asyn.web.common.WebMVCConstants;
-import org.adam.asyn.web.common.log.LogService;
 import org.adam.asyn.web.request.RequestMsg;
 import org.adam.asyn.web.response.ResponseMsg;
 import org.adam.asyn.web.service.callback.TestHttpFutureCallback;
@@ -29,8 +28,8 @@ import org.springframework.web.context.request.async.DeferredResult;;
 @ServiceErrorCode(WebMVCConstants.ADAM_TEST_ERROR)
 public class AdamTestStep1_4 implements IService<RequestMsg, DeferredResult<ResponseMsg<String>>> {
 
-	@Autowired
-	private LogService log;
+//	@Autowired
+//	private LogService log;
 
 	@Autowired
 	private HttpTestClient httpTestClient;

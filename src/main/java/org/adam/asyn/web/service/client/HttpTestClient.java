@@ -35,6 +35,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.adam.common.utils.AdamExceptionUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 
 /**
@@ -44,7 +45,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class HttpTestClient implements InitializingBean {
 
-	@Autowired
+	@Autowired(required = false)
 	private LogService logService;
 
 	private CloseableHttpAsyncClient httpAsyncClient;

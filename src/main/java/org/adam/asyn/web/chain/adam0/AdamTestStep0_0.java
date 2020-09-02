@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.adam.asyn.web.chain.adam;
+package org.adam.asyn.web.chain.adam0;
 
 import org.adam.asyn.web.common.WebMVCConstants;
 import org.adam.asyn.web.request.RequestMsg;

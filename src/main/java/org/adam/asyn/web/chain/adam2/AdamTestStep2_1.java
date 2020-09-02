@@ -4,7 +4,6 @@
 package org.adam.asyn.web.chain.adam2;
 
 import org.adam.asyn.web.common.WebMVCConstants;
-import org.adam.asyn.web.common.log.LogService;
 import org.adam.asyn.web.request.RequestMsg;
 import org.adam.asyn.web.response.ResponseMsg;
 import org.springframework.adam.common.bean.ResultVo;
@@ -13,7 +12,6 @@ import org.springframework.adam.common.bean.annotation.service.ServiceOrder;
 import org.springframework.adam.common.bean.annotation.service.ServiceType;
 import org.springframework.adam.service.AbsCallbacker;
 import org.springframework.adam.service.IService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.async.DeferredResult;;
 

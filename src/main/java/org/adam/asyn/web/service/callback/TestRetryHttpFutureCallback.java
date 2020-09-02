@@ -52,7 +52,7 @@ public class TestRetryHttpFutureCallback extends HttpFutureCallback<RequestMsg, 
 	 */
 	@Override
 	public void dealSuccess(HttpResponse response) {
-		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":retry test success");
+//		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":retry test success");
 		HttpEntity entity = response.getEntity();
 		String json;
 		try {
@@ -71,7 +71,7 @@ public class TestRetryHttpFutureCallback extends HttpFutureCallback<RequestMsg, 
 	 */
 	@Override
 	public void dealFail(Exception e) {
-		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":retry test fail");
+//		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":retry test fail");
 		if (null != e) {
 			e.printStackTrace();
 		}
@@ -86,7 +86,7 @@ public class TestRetryHttpFutureCallback extends HttpFutureCallback<RequestMsg, 
 	 */
 	@Override
 	public void dealComplete(HttpResponse result, Exception e) {
-		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":retry test complete");
+//		System.out.println(Thread.currentThread().getId() + " cn:" + className + " mn:" + methodName + ":retry test complete");
 	}
 
 	@Override

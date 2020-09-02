@@ -13,6 +13,8 @@ import org.adam.asyn.web.request.RequestMsg;
 import org.adam.asyn.web.response.ResponseMsg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.adam.backpressure.AdamBackPressureHolder;
+import org.springframework.adam.backpressure.AdamBackPressureUtils;
 import org.springframework.adam.common.bean.ResultVo;
 import org.springframework.adam.common.bean.annotation.service.RpcService;
 import org.springframework.adam.service.AdamFuture;
@@ -36,7 +38,36 @@ public class DeferredAdamController {
 	@Autowired
 	private ServiceChain serviceChain;
 
-	private static final ScheduledExecutorService instance = Executors.newScheduledThreadPool(800, new MyThreadFactory("MyThreads"));
+	private static final ScheduledExecutorService instance = Executors.newScheduledThreadPool(800,
+			new MyThreadFactory("MyThreads"));
+
+	/**
+	 * 背压
+	 * 由DeferredResult去返回response
+	 * 
+	 * @param req
+	 * @return
+	 */
+	@RequestMapping("/request0")
+	@ResponseBody
+	@RpcService(name = "req0")
+	public DeferredResult<ResponseMsg<String>> request0(RequestMsg req) {
+		logger.debug("request0:请求参数{}", req.getParam());
+
+		if (AdamBackPressureHolder.get().tryAcquire()) {
+			System.out.println("aaaaaaaaaa");
+		} else {
+			System.out.println("bbbbbbbbbb");
+		}
+
+		DeferredResult<ResponseMsg<String>> result = new DeferredResult<ResponseMsg<String>>();
+		ResultVo<DeferredResult<ResponseMsg<String>>> output = new ResultVo<DeferredResult<ResponseMsg<String>>>();
+		output.setData(result);
+
+		serviceChain.doServer(req, output, WebMVCConstants.ADAM_TEST_BP);
+
+		return result;
+	}
 
 	/**
 	 * 第一种方法：全异步，serviceChain的doServer完成后则主线程返回了，不等callback，
@@ -90,12 +121,12 @@ public class DeferredAdamController {
 
 		// 开始工作
 		future.work();
-		System.out.println("aaaaaaaaaa");
+
 		future.waitEnd(10l, TimeUnit.MINUTES);
-		System.out.println("bbbbbbbbbb");
+
 		return result;
 	}
-	
+
 	/**
 	 * 第三种方法：全异步并发
 	 * 
@@ -130,7 +161,7 @@ public class DeferredAdamController {
 		ResultVo<DeferredResult<ResponseMsg<String>>> output2 = new ResultVo<DeferredResult<ResponseMsg<String>>>();
 		output1.setData(result);
 		output2.setData(result);
-		
+
 		AdamFuture future = new AdamFuture(2);
 		output1.setFuture(future);
 		output2.setFuture(future);
@@ -139,7 +170,6 @@ public class DeferredAdamController {
 		future.work();
 		return result;
 	}
-	
 
 	/**
 	 * 第六种方法：支持请求重发

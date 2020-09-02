@@ -25,7 +25,7 @@ public class RequestHook implements IRequestHook {
 	 */
 	@Override
 	public Object doBefore(String url, Map<String, String> headersMap, Object[] income, Object output) throws Exception {
-		ThreadLocalHolder.setRequestLogFlag(2);
+		ThreadLocalHolder.setRequestLogFlag(5);
 		return null;
 	}
 

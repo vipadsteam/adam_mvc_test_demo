@@ -3,7 +3,7 @@
  */
 package test.urlencode;
 
-import org.adam.asyn.web.chain.adam.AdamTestStep0_0;
+import org.adam.asyn.web.chain.adam0.AdamTestStep0_0;
 import org.springframework.adam.common.bean.ResultVo;
 
 /**
